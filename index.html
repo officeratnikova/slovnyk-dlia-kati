@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Словник життєвих термінів, які не треба редагувати</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,800;1,7..72,400;1,7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#CBC6BB;
+  --paper:#F6F3EB;
+  --ink:#1C1B19;
+  --ink-soft:#5D5A52;
+  --cloth:#1D3A31;
+  --cloth-dk:#122720;
+  --gold:#CDA75A;
+  --foil:linear-gradient(100deg,#9C7A35 0%,#F1D998 32%,#B88F42 52%,#E8CB82 74%,#9C7A35 100%);
+  --f:"Literata",Georgia,"Times New Roman",serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --desk:#141413; } }
+:root[data-theme="dark"]{ --desk:#141413; }
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;overflow:hidden;
+  background:var(--desk);
+  font-family:var(--f);color:var(--ink);
+  display:grid;place-items:center;
+  -webkit-text-size-adjust:100%;
+}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--gold);outline-offset:3px}
+
+.book{
+  position:relative;
+  width:min(100vw,430px);
+  height:min(100%,920px);
+  perspective:1800px;
+}
+@media (min-width:500px){
+  .book{height:min(calc(100% - 40px),900px)}
+  .pg{border-radius:3px 8px 8px 3px}
+}
+
+/* ---------- PAGES ---------- */
+.pg{
+  position:absolute;inset:0;
+  background:var(--paper);
+  transform-origin:left center;
+  transform:rotateY(0deg);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  transition:transform .75s cubic-bezier(.45,.05,.25,1),visibility 0s 0s;
+  box-shadow:0 20px 40px -20px rgba(0,0,0,.45);
+  overflow:hidden;
+  visibility:visible;
+}
+.pg::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.25),rgba(0,0,0,0) 40%);
+  opacity:0;transition:opacity .75s ease;
+}
+.pg.turned{transform:rotateY(-178deg);visibility:hidden;pointer-events:none;transition:transform .75s cubic-bezier(.45,.05,.25,1),visibility 0s .75s}
+.pg.turned::after{opacity:1}
+.pg.fast{transition-duration:.38s,0s}
+.pg.fast.turned{transition:transform .38s cubic-bezier(.45,.05,.25,1),visibility 0s .38s}
+/* spine gutter on paper pages */
+.paper::before{content:"";position:absolute;left:0;top:0;bottom:0;width:22px;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.09),rgba(0,0,0,0))}
+
+/* ---------- COVER ---------- */
+.cover{
+  background-color:var(--cloth);
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 1px,transparent 1px 3px),
+    radial-gradient(120% 90% at 50% 30%,transparent 40%,rgba(0,0,0,.5));
+  color:var(--gold);
+  display:flex;flex-direction:column;align-items:center;
+  padding:34px 30px 118px 40px;
+  text-align:center;
+}
+.cover::before{content:"";position:absolute;left:0;top:0;bottom:0;width:16px;
+  background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,.15) 70%,rgba(255,255,255,.06))}
+.frame{position:absolute;inset:18px 18px 18px 30px;border:1.5px solid rgba(205,167,90,.75);pointer-events:none}
+.frame::after{content:"";position:absolute;inset:6px;border:.75px solid rgba(205,167,90,.45)}
+.foil{background:var(--foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cv-top{margin:22px 0 0;font-size:11px;letter-spacing:.32em;font-weight:600}
+.cv-mid{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px}
+.cv-title{margin:0;font-weight:800;letter-spacing:.12em;line-height:1;padding-left:.12em;font-size:44px}
+.cv-sub{margin:0;font-style:italic;font-size:19px;line-height:1.4;max-width:15em}
+.orn{display:flex;align-items:center;gap:10px;width:120px}
+.orn::before,.orn::after{content:"";flex:1;height:1px;background:rgba(205,167,90,.7)}
+.orn i{width:7px;height:7px;transform:rotate(45deg);background:var(--gold)}
+.cv-for{margin:0 0 6px;font-style:italic;font-size:17px}
+
+/* ---------- RUNNING HEAD ---------- */
+.rh{
+  position:absolute;left:30px;right:52px;top:22px;
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-size:11px;letter-spacing:.2em;color:var(--ink-soft);
+  padding-bottom:8px;border-bottom:1px solid rgba(28,27,25,.35);
+}
+.rh span:last-child{letter-spacing:.05em;font-variant-numeric:oldstyle-nums}
+
+/* ---------- ENTRY ---------- */
+.body{position:absolute;left:30px;right:52px;top:18%;bottom:110px}
+.bgl{
+  position:absolute;left:-6px;bottom:-40px;
+  font-weight:800;font-size:min(58vh,440px);line-height:.8;
+  color:rgba(28,27,25,.045);pointer-events:none;user-select:none;
+}
+.hw{margin:0;font-weight:800;line-height:1.05;letter-spacing:.01em;white-space:nowrap;padding-top:.12em;font-size:56px}
+.gram{margin:8px 0 0;font-size:17px;color:var(--ink-soft)}
+.gram i{font-style:italic}
+.rule{width:44px;height:1.5px;background:var(--ink);margin:26px 0 22px;opacity:.75}
+.def p{margin:0;font-size:22px;line-height:1.42}
+.def p + p{margin-top:2px}
+.reveal{opacity:0;transform:translateY(6px);transition:opacity .45s ease,transform .45s ease}
+.pg.on .reveal{opacity:1;transform:none}
+.pg.on .reveal.d1{transition-delay:.25s}.pg.on .reveal.d2{transition-delay:.4s}.pg.on .reveal.d3{transition-delay:.55s}.pg.on .reveal.d4{transition-delay:.7s}
+
+/* phrase */
+.label{margin:0 0 18px;font-size:11px;letter-spacing:.26em;font-weight:600;color:var(--ink-soft)}
+.phr{margin:0;font-weight:800;font-size:27px;line-height:1.28;padding-top:.1em}
+.phr-def{margin:0;font-size:21px;line-height:1.48}
+.phr-def b{font-weight:600}
+
+/* colophon */
+.colo{position:absolute;left:30px;right:30px;top:0;bottom:110px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.colo .c-title{margin:0 0 22px;font-style:italic;font-size:18px;line-height:1.4;max-width:16em}
+.colo .c-line{margin:0;font-size:14.5px;line-height:1.75;color:var(--ink-soft)}
+.colo .c-sep{width:30px;height:1px;background:rgba(28,27,25,.4);margin:22px 0}
+.seal{
+  margin:0;font-weight:800;font-size:19px;letter-spacing:.01em;
+  padding:12px 18px;border:1.5px solid var(--ink);outline:1px solid var(--ink);outline-offset:3px;
+}
+
+/* ---------- THUMB TABS ---------- */
+.tabs{
+  position:absolute;z-index:300;right:0;top:15%;bottom:22%;
+  width:30px;display:flex;flex-direction:column;justify-content:space-between;
+  transition:opacity .35s ease;
+}
+.tabs.off{opacity:0;pointer-events:none}
+.tab{
+  flex:none;height:min(34px,8.5%);
+  border:0;padding:0 0 0 2px;cursor:pointer;
+  background:var(--cloth);color:var(--gold);
+  border-radius:5px 0 0 5px;
+  font-weight:600;font-size:13px;
+  box-shadow:-1px 1px 3px rgba(0,0,0,.2);
+  transition:transform .2s ease,background .2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab.cur{background:var(--ink);color:var(--paper);transform:translateX(-5px)}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:absolute;z-index:400;left:0;right:0;bottom:0;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:0 20px calc(26px + env(safe-area-inset-bottom,0px) * 0);
+  height:100px;
+  pointer-events:none;
+}
+.nav > *{pointer-events:auto}
+.btn{
+  border:0;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  height:52px;border-radius:26px;padding:0 30px;
+  font-size:17px;font-weight:600;letter-spacing:.02em;
+  background:var(--ink);color:var(--paper);
+  display:inline-flex;align-items:center;gap:10px;
+  transition:transform .1s ease,background .3s,color .3s,border-color .3s;
+}
+.btn:active{transform:scale(.97)}
+.btn svg{width:18px;height:18px}
+.round{width:46px;height:46px;padding:0;justify-content:center;border-radius:50%;background:transparent;color:var(--ink);border:1.5px solid rgba(28,27,25,.35)}
+.round.hide{visibility:hidden}
+.nav.on-cover .btn.main{background:transparent;color:var(--gold);border:1.5px solid var(--gold)}
+.nav.on-cover .round{color:var(--gold);border-color:rgba(205,167,90,.5)}
+.mute .x{display:none}
+.mute[aria-pressed="true"] .x{display:inline}
+.mute[aria-pressed="true"] .w{display:none}
+
+@media (max-height:640px){
+  .body{top:14%}
+  .def p{font-size:20px}
+  .phr{font-size:23px}.phr-def{font-size:18.5px}
+  .cv-title{font-size:38px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pg,.pg.turned,.pg::after,.reveal{transition-duration:.01s!important}
+}
+</style>
+</head>
+<body>
+<main class="book" id="book" aria-live="polite">
+  <div class="tabs off" id="tabs"></div>
+  <nav class="nav on-cover" id="nav">
+    <button class="btn round hide" id="prev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="btn main" id="next"><span id="nextLabel">Відкрити</span></button>
+    <button class="btn round mute" id="mute" aria-label="Звук" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="w" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="x" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button>
+  </nav>
+</main>
+
+<script>
+(function(){
+"use strict";
+const A="\u0301";
+const nb = s => s.replace(/(^|[\s>(«])([ІЙАВЗУОіїйавзуоIi])\s/g,"$1$2\u00A0").replace(/(^|[\s>])([ІЙАВЗУОіїйавзуо])\s/g,"$1$2\u00A0");
+const st = s => nb(s.replace(/\+/g,A));
+
+const ENTRIES=[
+  {w:"ВІДПОЧИ+НОК", g:"-нку, <i>ч.</i>; <i>пестл.</i> відпочи+ночок", t:["Вживати часто й без приводу.","Особливого дозволу не потребує.","Достатньо власного бажання."]},
+  {w:"ГРО+ШІ", g:"-ей, <i>тільки мн.</i>", t:["Тут взагалі нічого не редагуємо.","Просто збільшуємо кількість."]},
+  {w:"ЗАДОВО+ЛЕННЯ", g:"-я, <i>с.</i>", t:["Не скорочувати.","Не оптимізувати.","Не переносити на потім."]},
+  {w:"ЛЮБО+В", g:"-о+ві, <i>ж.</i>", t:["Не потребує стилістичного редагування.","Особливо якщо вона твоя і взаємна."]},
+  {w:"ОТО+ЧЕННЯ", g:"-я, <i>с.</i>", t:["Уживати лише з означенням «приємне».","Інші сполучення — застарілі.","<i>Син.:</i> своє, рідне, те, з яким легко."]},
+  {w:"ПРИГО+ДИ", g:"-го+д, <i>мн.</i>", t:["Уживаються переважно в множині.","Трапляються без погодження.","Їм так можна."]},
+  {w:"СПО+КІЙ", g:"-кою, <i>ч.</i>", t:["Залишити без уточнень, пояснень","і трьох варіантів формулювання."]},
+  {w:"ЧАС", g:"-у, <i>ч.</i>", t:["Просто додати, щоб на все вистачало.","Особливо на себе."]},
+  {w:"ЩА+СТЯ", g:"-я, <i>с.</i>", t:["Можна не знати, як правильно пишеться,","і неправильно вимовляти.","Головне — відчувати щодня."]}
+];
+
+const book=document.getElementById("book"), tabsEl=document.getElementById("tabs"),
+      nav=document.getElementById("nav"), nextBtn=document.getElementById("next"),
+      nextLabel=document.getElementById("nextLabel"), prevBtn=document.getElementById("prev"),
+      muteBtn=document.getElementById("mute");
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- build pages ---------- */
+const pages=[];
+function addPage(cls,html,meta){
+  const p=document.createElement("section");
+  p.className="pg "+cls; p.innerHTML=html; p.meta=meta||{};
+  book.insertBefore(p,tabsEl); pages.push(p); return p;
+}
+addPage("cover",`
+  <div class="frame"></div>
+  <p class="cv-top foil">ВИДАННЯ ПЕРШЕ</p>
+  <div class="cv-mid">
+    <h1 class="cv-title foil">СЛОВНИК</h1>
+    <div class="orn"><i></i></div>
+    <p class="cv-sub foil">життєвих термінів, які не&nbsp;треба редагувати</p>
+  </div>
+  <p class="cv-for foil">для Каті</p>
+`,{kind:"cover"});
+
+ENTRIES.forEach((e,i)=>{
+  const plain=e.w.replace(/\+/g,"");
+  addPage("paper",`
+    <div class="rh"><span>${plain}</span><span>${i+1}</span></div>
+    <div class="body">
+      <div class="bgl" aria-hidden="true">${plain[0]}</div>
+      <h2 class="hw reveal">${st(e.w)}</h2>
+      <p class="gram reveal d1">${st(e.g)}</p>
+      <div class="rule reveal d1"></div>
+      <div class="def">${e.t.map((l,k)=>`<p class="reveal d${Math.min(4,k+2)}">${nb(l)}</p>`).join("")}</div>
+    </div>
+  `,{kind:"entry",letter:plain[0]});
+});
+
+addPage("paper",`
+  <div class="rh"><span>ФРАЗЕОЛОГІЗМ РОКУ</span><span>${ENTRIES.length+1}</span></div>
+  <div class="body" style="top:15%">
+    <div class="bgl" aria-hidden="true">Ф</div>
+    <p class="label reveal">ФРАЗЕОЛОГІЗМ РОКУ</p>
+    <h2 class="phr reveal d1">${st("РА+ДУВАТИ ДУ+ШУ Й КИШЕ+НІ, А НЕ МОРО+ЧИТИ ГО+ЛОВУ")}</h2>
+    <p class="gram reveal d2"><i>фраз.</i></p>
+    <div class="rule reveal d2"></div>
+    <p class="phr-def reveal d3">${st("Цього року бажаємо тобі слів і відчуттів, які будуть радувати <b>ду+шу</b> й <b>кише+ні</b>, а не морочити <b>го+лову</b>.")}</p>
+  </div>
+`,{kind:"entry",letter:"Ф"});
+
+addPage("paper",`
+  <div class="colo">
+    <p class="c-title reveal">Словник життєвих термінів, які не&nbsp;треба редагувати</p>
+    <p class="c-line reveal d1">Видання перше, іменне.</p>
+    <p class="c-line reveal d1">Відповідальна за випуск — Аня, команда GOVISUAL.</p>
+    <p class="c-line reveal d2">Підписано до друку 04.10.2026.</p>
+    <p class="c-line reveal d2">Наклад: 1 примірник.</p>
+    <div class="c-sep reveal d2"></div>
+    <p class="seal reveal d3">Редагуванню не підлягає.</p>
+  </div>
+`,{kind:"colophon"});
+
+pages.forEach((p,i)=>p.style.zIndex=String(200-i));
+const LAST=pages.length-1;
+
+/* tabs */
+const tabMap=[];
+pages.forEach((p,i)=>{ if(p.meta.kind==="entry"&&!tabMap.find(t=>t.l===p.meta.letter)) tabMap.push({l:p.meta.letter,i}); });
+tabMap.forEach(t=>{
+  const b=document.createElement("button"); b.className="tab"; b.textContent=t.l;
+  b.setAttribute("aria-label","Літера "+t.l);
+  b.addEventListener("click",()=>goTo(t.i));
+  t.el=b; tabsEl.appendChild(b);
+});
+
+/* ---------- fit headwords ---------- */
+function fit(){
+  pages.forEach(p=>{
+    const hw=p.querySelector(".hw"); if(!hw) return;
+    const avail=p.querySelector(".body").clientWidth;
+    hw.style.fontSize="100px"; hw.style.display="inline-block";
+    const w=hw.offsetWidth||1;
+    hw.style.display="";
+    hw.style.fontSize=Math.min(64,avail/w*100*.98).toFixed(1)+"px";
+  });
+}
+
+/* ---------- audio ---------- */
+let ac=null,master=null,noiseBuf=null,muted=false;
+function initAudio(){
+  if(ac){ if(ac.state==="suspended") ac.resume(); return; }
+  try{
+    ac=new (window.AudioContext||window.webkitAudioContext)();
+    master=ac.createGain(); master.gain.value=.35; master.connect(ac.destination);
+    noiseBuf=ac.createBuffer(1,Math.floor(ac.sampleRate*.6),ac.sampleRate);
+    const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  }catch(e){ ac=null; }
+}
+function flip(vol,dur){
+  if(!ac||muted) return;
+  vol=vol||.22; dur=dur||.32;
+  const t=ac.currentTime;
+  const s=ac.createBufferSource(); s.buffer=noiseBuf;
+  const f=ac.createBiquadFilter(); f.type="bandpass"; f.Q.value=.9;
+  f.frequency.setValueAtTime(700,t); f.frequency.exponentialRampToValueAtTime(3200,t+dur*.7);
+  const g=ac.createGain();
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+dur*.35); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t+dur+.05);
+}
+function thump(){
+  if(!ac||muted) return;
+  const t=ac.currentTime, o=ac.createOscillator(), g=ac.createGain();
+  o.frequency.setValueAtTime(120,t); o.frequency.exponentialRampToValueAtTime(55,t+.18);
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.35,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.2);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t+.25);
+}
+muteBtn.addEventListener("click",()=>{ muted=!muted; muteBtn.setAttribute("aria-pressed",String(muted)); });
+
+/* ---------- navigation ---------- */
+let cur=0, lock=false;
+function ui(){
+  pages.forEach((p,i)=>{ p.classList.toggle("turned",i<cur); p.classList.toggle("on",i===cur); p.setAttribute("aria-hidden",i===cur?"false":"true"); });
+  const kind=pages[cur].meta.kind;
+  nav.classList.toggle("on-cover",kind==="cover");
+  prevBtn.classList.toggle("hide",cur===0);
+  nextLabel.textContent= cur===0?"Відкрити":(cur===LAST?"Закрити словник":"Гортати");
+  tabsEl.classList.toggle("off",kind!=="entry");
+  tabMap.forEach(t=>t.el.classList.toggle("cur",pages[cur].meta.letter===t.l && kind==="entry"));
+}
+function step(dir){
+  if(lock) return;
+  const to=cur+dir; if(to<0||to>LAST) return;
+  initAudio();
+  if(cur===0&&dir>0) thump();
+  flip();
+  cur=to; ui();
+  lock=true; setTimeout(()=>lock=false,reduce?50:380);
+}
+async function goTo(target){
+  if(lock||target===cur) return;
+  lock=true; initAudio();
+  const dir=target>cur?1:-1;
+  pages.forEach(p=>p.classList.add("fast"));
+  while(cur!==target){
+    cur+=dir; flip(.14,.2); ui();
+    await new Promise(r=>setTimeout(r,reduce?0:70));
+  }
+  setTimeout(()=>{ pages.forEach(p=>p.classList.remove("fast")); lock=false; },reduce?0:420);
+}
+nextBtn.addEventListener("click",()=>{ if(cur===LAST) goTo(0); else step(1); });
+prevBtn.addEventListener("click",()=>step(-1));
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight") { if(cur<LAST) step(1); }
+  else if(e.key==="ArrowLeft") step(-1);
+});
+let sx=null, sy=null;
+book.addEventListener("touchstart",e=>{
+  if(e.target.closest(".tabs,.nav")) { sx=null; return; }
+  sx=e.touches[0].clientX; sy=e.touches[0].clientY;
+},{passive:true});
+book.addEventListener("touchend",e=>{
+  if(sx===null) return;
+  const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+  sx=null;
+  if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.3){ if(dx<0){ if(cur<LAST) step(1); } else step(-1); }
+},{passive:true});
+
+ui(); fit();
+let rt; window.addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(fit,120); });
+if(document.fonts){
+  Promise.race([Promise.all([document.fonts.load('800 40px Literata'),document.fonts.load('400 20px Literata'),document.fonts.load('italic 400 20px Literata')]),new Promise(r=>setTimeout(r,2500))])
+    .then(fit).catch(()=>{});
+}
+})();
+</script>
+</body>
+</html>
